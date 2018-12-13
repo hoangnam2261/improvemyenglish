@@ -1,0 +1,26 @@
+language: python
+python:
+  - "3.6"
+# command to install dependencies
+install:
+  - pip install requests
+  - pip install bs4
+  - pip install html5lib
+  - pip install datetime
+  - pip install pygithub
+  - pip install tomd
+  - pip install urllib3
+  - wget https://github.com/libgit2/libgit2/archive/v0.27.7.tar.gz
+  - tar xzf v0.27.7.tar.gz
+  - cd libgit2-0.27.7/
+  - cmake .
+  - make
+  - sudo make install
+  - cd ..
+  - pip install pygit2
+  - sudo ldconfig
+  - python -c 'import pygit2'
+
+# command to run
+script:
+  - python3 dailyReading.py
