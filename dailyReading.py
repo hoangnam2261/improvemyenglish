@@ -1,13 +1,14 @@
 import json
+import os
+from datetime import datetime
 
 import pygit2
 import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
-from github import Github
-import os
-import tomd
 import urllib3
+from bs4 import BeautifulSoup
+from github import Github
+
+import wisecreator.wisecreate
 
 repoName = os.environ['REPO_NAME']
 repoToken = os.environ['GITHUB_TOKEN']
@@ -75,21 +76,21 @@ def write_audio_file(audio_links, directory, title):
 def run():
     print('Fetching content...', end='')
     title, author, description, cta, img_url = get_meta_data()
-    article = tomd.convert(get_article(cta))
-    print('Done')
+    html_article = get_article(cta)
+    output_html = f'<img src="{img_url}"><h1>{title}</h1><h2>{author}</h2><p>{description}</p>{html_article}'
 
     date = datetime.now().strftime('%Y%m%d')
-    directory = 'clone/blinks/' + f'{date[:4]}' + '/' + title
+    directory = 'clone/blinks/' + f'{date[:4]}' + '/' + title.replace(" ", "_")
     if not os.path.exists(directory):
         os.makedirs(directory)
     commitMessage = f'{title} by {author}'
-    text_file_name = os.path.join(directory, f'{date}-{title}-{author}.md')
+    html_file_name = os.path.join(directory, f'{date}-{title.replace(" ", "_")}-{author.replace(" ", "_")}.html')
 
     print('Building output...', end='')
-    # Convert to markdown, add source
-    output = f'![{title}]({img_url})\n# {title}\n*{author}*\n\n>{description}\n\n{article}\n\nSource: [{commitMessage}]({domain}{cta})'
-    write_to_file(text_file_name, output, 'w')
-    write_audio_file(get_audio_links(get_book_id(cta), get_chapter_ids(cta)), directory, title)
+    write_to_file(html_file_name, output_html, 'w')
+    wisecreator.wisecreate.main(f'{html_file_name}')
+    os.remove(html_file_name)
+    write_audio_file(get_audio_links(get_book_id(cta), get_chapter_ids(cta)), directory, title.replace(" ", "_"))
     return commitMessage
 
 

@@ -3,6 +3,7 @@ python:
   - "3.6"
 # command to install dependencies
 install:
+  - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
   - pip install requests
   - pip install bs4
   - pip install html5lib
@@ -10,6 +11,9 @@ install:
   - pip install pygithub
   - pip install tomd
   - pip install urllib3
+  - pip install pysqlite3
+  - pip install nltk
+  - pip install cursor
   - wget https://github.com/libgit2/libgit2/archive/v0.27.7.tar.gz
   - tar xzf v0.27.7.tar.gz
   - cd libgit2-0.27.7/
@@ -20,6 +24,7 @@ install:
   - pip install pygit2
   - sudo ldconfig
   - python -c 'import pygit2'
+  - chmod +x wisecreator/third_party/mobitool-linux-x86_64
 
 # command to run
 script:
