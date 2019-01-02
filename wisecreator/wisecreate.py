@@ -269,7 +269,7 @@ def check_dependencies():
         raise ValueError(path_to_mobitool + " not found")
 
 
-def main(path_to_book):
+def main(path_to_book, cover_image):
     print("[.] Checking dependenices")
     try:
         check_dependencies()
@@ -300,7 +300,7 @@ def main(path_to_book):
     print("[.] Converting html file to mobi to generate ASIN")
     # Convert mobi to mobi by calibre and get ASIN that calibre assign to converted book
     try:
-        cmd_str = f'ebook-convert {path_to_book} {new_book_path}'
+        cmd_str = f'ebook-convert {path_to_book} {new_book_path} --cover {cover_image} --level1-toc //h:h1'
         subprocess.check_output(cmd_str, shell=True)
     except Exception as e:
         print("  [-] Failed to convert html file to mobi:")

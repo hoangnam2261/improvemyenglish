@@ -5,6 +5,8 @@ from datetime import datetime
 import pygit2
 import requests
 import urllib3
+import urllib
+import re
 from bs4 import BeautifulSoup
 from github import Github
 
@@ -77,20 +79,24 @@ def run():
     print('Fetching content...', end='')
     title, author, description, cta, img_url = get_meta_data()
     html_article = get_article(cta)
-    output_html = f'<img src="{img_url}"><h1>{title}</h1><h2>{author}</h2><p>{description}</p>{html_article}'
-
     date = datetime.now().strftime('%Y%m%d')
-    directory = 'clone/blinks/' + f'{date[:4]}' + '/' + title.replace(" ", "_")
+    legal_title = re.sub('[^A-Za-z0-9]+', '_', title)
+    directory = 'clone/blinks/' + f'{date[:4]}' + '/' + legal_title
     if not os.path.exists(directory):
         os.makedirs(directory)
+    image_name = os.path.join(directory, str(img_url).split('/')[-1])
+    urllib.request.urlretrieve(img_url, image_name)
+    output_html = f'<h1>{title}</h1><h2>{author}</h2><p>{description}</p>{html_article}'
+
     commitMessage = f'{title} by {author}'
-    html_file_name = os.path.join(directory, f'{date}-{title.replace(" ", "_")}-{author.replace(" ", "_")}.html')
+    html_file_name = os.path.join(directory, f'{date}-{legal_title}-{author.replace(" ", "_")}.html')
 
     print('Building output...', end='')
     write_to_file(html_file_name, output_html, 'w')
-    wisecreator.wisecreate.main(f'{html_file_name}')
+    wisecreator.wisecreate.main(f'{html_file_name}', image_name)
     os.remove(html_file_name)
-    write_audio_file(get_audio_links(get_book_id(cta), get_chapter_ids(cta)), directory, title.replace(" ", "_"))
+    os.remove(image_name)
+    write_audio_file(get_audio_links(get_book_id(cta), get_chapter_ids(cta)), directory, legal_title)
     return commitMessage
 
 
