@@ -21,7 +21,7 @@ install:
   - make
   - sudo make install
   - cd ..
-  - pip install pygit2
+  - pip install 'pygit2==0.27.3'
   - sudo ldconfig
   - python -c 'import pygit2'
   - chmod +x wisecreator/third_party/mobitool-linux-x86_64
