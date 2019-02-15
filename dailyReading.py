@@ -72,7 +72,7 @@ def get_audio_links(book_id, chapterids):
 
 def write_audio_file(audio_links, directory, title):
     for chapterNo, audio_link in audio_links.items():
-        write_to_file(os.path.join(directory, f'{title}-{chapterNo}.mp4'),
+        write_to_file(os.path.join(directory, f'{title}-{chapterNo}.m4a'),
                       requests.get(audio_link).content, 'wb')
 
 
