@@ -81,6 +81,7 @@ def run():
     title, author, description, cta, img_url = get_meta_data()
     html_article = get_article(cta)
     date = datetime.now().strftime('%Y%m%d')
+    author = re.sub('[^A-Za-z0-9]+', '_', author)
     legal_title = re.sub('[^A-Za-z0-9]+', '_', title)
     directory = 'clone/blinks/' + f'{date[:4]}' + '/' + legal_title
     if not os.path.exists(directory):
@@ -90,7 +91,7 @@ def run():
     output_html = f'<h1>{title}</h1><h2>{author}</h2><p>{description}</p>{html_article}'
 
     commitMessage = f'{title} by {author}'
-    html_file_name = os.path.join(directory, f'{date}-{legal_title}-{author.replace(" ", "_")}.html')
+    html_file_name = os.path.join(directory, f'{date}-{legal_title}-{author}.html')
 
     print('Building output...', end='')
     write_to_file(html_file_name, output_html, 'w')
