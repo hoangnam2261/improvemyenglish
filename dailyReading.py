@@ -1,5 +1,6 @@
 import json
 import os
+import ssl
 from datetime import datetime
 
 import pygit2
@@ -20,7 +21,7 @@ email = os.environ['EMAIL']
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1 Safari/605.1.15'}
-http = urllib3.PoolManager(10, headers=headers)
+http = urllib3.PoolManager(10, headers=headers, cert_reqs=ssl.CERT_NONE)
 urllib3.disable_warnings()
 
 
