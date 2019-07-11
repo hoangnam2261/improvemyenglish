@@ -32,12 +32,12 @@ def get_element_from_request(url, element, class_):
 
 
 def get_meta_data():
-    container = get_element_from_request(domain + '/nc/daily', 'div', 'dailyV2__free-book')
+    container = get_element_from_request(domain + '/nc/daily', 'div', 'daily-book__container')
 
-    title = container.find('div', 'dailyV2__free-book__title').string.strip()
-    author = container.find('div', 'dailyV2__free-book__author').string.strip()
-    description = container.find('div', 'dailyV2__free-book__description').string.strip()
-    cta = container.find('div', 'dailyV2__free-book__cta').a['href']
+    title = container.find('h3', 'daily-book__headline').string.strip()
+    author = container.find('div', 'daily-book__author').string.strip()
+    description = container.find('div', 'book-tabs__content-inner').text.strip()
+    cta = container.find('a', 'cta cta--play daily-book__cta')['href']
     img_url = container.find('img')['src']
 
     return title, author, description, cta, img_url
