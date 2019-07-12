@@ -82,7 +82,7 @@ def run():
     title, author, description, cta, img_url = get_meta_data()
     html_article = get_article(cta)
     date = datetime.now().strftime('%Y%m%d')
-    author = re.sub('[^A-Za-z0-9]+', '_', author)
+    author = re.sub('[^A-Za-z0-9]+', '_', author.replace('by ', ''))
     legal_title = re.sub('[^A-Za-z0-9]+', '_', title)
     directory = 'clone/blinks/' + f'{date[:4]}' + '/' + legal_title
     if not os.path.exists(directory):
