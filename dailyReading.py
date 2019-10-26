@@ -96,12 +96,26 @@ def run():
 
     print('Building output...', end='')
     write_to_file(html_file_name, output_html, 'w')
-    wisecreator.wisecreate.main(f'{html_file_name}', image_name)
+    language_file_name = wisecreator.wisecreate.main(f'{html_file_name}', image_name)
+    write_index_file(date, legal_title, author, language_file_name)
     os.remove(html_file_name)
     os.remove(image_name)
     write_audio_file(get_audio_links(get_book_id(cta), get_chapter_ids(cta)), directory, legal_title)
     return commitMessage
 
+def write_index_file(date, legal_title, author, language_file_name):
+    content = f'{date}-{legal_title}-{author}'
+    print(content)
+    link_to_mobi = f'{repo_link}/raw/master/blinks/2019/{legal_title}/' \
+                   f'{content}/{content}.mobi'
+    print(link_to_mobi)
+    link_to_dll = f'{repo_link}/raw/master/blinks/2019/{legal_title}/' \
+                  f'{content}/{content}.sdr/{language_file_name}'
+    file_content = f'{content}\n{link_to_mobi}\n{link_to_dll}'
+    index_directory = 'clone/blinks/' + f'{date[:4]}' + '/index'
+    if not os.path.exists(index_directory):
+        os.makedirs(index_directory)
+    write_to_file(os.path.join(index_directory, f'{date}.txt'), file_content, 'w')
 
 def write_to_file(file_name, output, option):
     file = open(file_name, option)
