@@ -380,3 +380,4 @@ def main(path_to_book, cover_image):
 
     print("[.] Success!")
     print(f"Now copy this folder: {result_dir_path} to your Kindle")
+    return 'LanguageLayer.en.' + book_asin + '.kll'
