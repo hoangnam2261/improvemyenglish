@@ -15,6 +15,7 @@ import wisecreator.wisecreate
 
 repoName = os.environ['REPO_NAME']
 repoToken = os.environ['GITHUB_TOKEN']
+repo_link = os.environ['REPO_LINK']
 domain = os.environ['HIDE_DOMAIN']
 userName = os.environ['USER_NAME']
 email = os.environ['EMAIL']
